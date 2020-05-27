@@ -2,7 +2,7 @@
 <html>
   <head>
   
-    <!--<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">-->
+    <!--<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
      <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Compiled and minified CSS -->
@@ -10,6 +10,33 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>{% block title %}{% endblock %}</title>
+
+    <style>
+        .form-btn {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding-top: 20px;
+        }
+
+        .btn {
+            font-size: 17px;
+            line-height: 1.5;
+            color: #ffffff;
+            text-transform: uppercase;
+
+            width: 13%;
+            height: 50px;
+            border-radius: 25px;
+            background: #800080;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 25px;
+        }
+        
+    </style>
 
   </head>
   <body>
