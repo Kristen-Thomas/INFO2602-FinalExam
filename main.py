@@ -23,7 +23,7 @@ def create_app():
   app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
   app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
   app.config['SECRET_KEY'] = "MYSECRET"
-  #app.config['JWT_EXPIRATION_DELTA'] = timedelta(days = 7) # uncomment if using flsk jwt
+  app.config['JWT_EXPIRATION_DELTA'] = timedelta(days = 7) # uncomment if using flsk jwt
   CORS(app)
   login_manager.init_app(app) # uncomment if using flask login
   db.init_app(app)
@@ -37,7 +37,7 @@ db.create_all(app=app)
 ''' End Boilerplate Code '''
 
 ''' Set up JWT here (if using flask JWT)'''
-'''
+
 #found in lab 5
 def authenticate(uname, password): #search for the specified user
   user = User.query.filter_by(username=uname).first() #if user is found and password matches
@@ -49,7 +49,7 @@ def identity(payload):
   return User.query.get(payload['identity'])
 
 jwt = JWT(app, authenticate, identity)
-'''
+
 ''' End JWT Setup '''
 
 @app.route('/')
@@ -66,7 +66,7 @@ def client_app():
     return render_template('app.html')
 
 
-@app.route("/login", methods=(['GET', 'POST']))
+@app.route("/login", methods=(['GET', 'POST'])) 
 def login():
     if request.method == 'GET':
         return render_template('index.html')
@@ -87,32 +87,33 @@ def login():
             flash('Invalid Login')
         return redirect(url_for('login'))
 
+@app.route('/identify') #Lab 10
+@jwt_required()
+def protected():
+    return json.dumps(current_identity.username)
+
 @app.route('/posts', methods=['GET', 'POST'])
 @login_required
 def add_posts():
     new_post = request.get_json()
     if new_post is not None:
-        post = Post(text=new_post['text'])
+        post = Post(text=new_post['text'], username = current_identity.username)
         db.session.add(post)
         db.session.commit()
         flash ('New Post Added!')
         return redirect(url_for('add_posts'))
     return render_template('app.html')
 
-'''
-    todos = Todo.query.filter_by(userid=current_user.id).all()
-    if todos is None:
-    todos = [] # if user has no todos pass an empty list
-  form = AddTodo()
-  if form.validate_on_submit():
-    data = request.form
-    todo = Todo(text=data['text'], done=False, userid=current_user.id)
-    db.session.add(todo)
-    db.session.commit()
-    flash('Todo Created!')
-    return redirect(url_for('todos'))
-  return render_template('todo.html', form=form, todos=todos)
-'''
+@app.route('/get_posts', methods=['GET']) #Lab 10 
+def get_posts():
+  posts = Post.query.all()
+  results = []
+  for post in posts:
+    rec = Post.toDict()
+    rec['Likes: '] = post.getTotalLikes()
+    rec['Dislikes: '] = post.getTotalDislikes() 
+    results.append(rec)
+  return json.dumps(results)
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=8080, debug=True)

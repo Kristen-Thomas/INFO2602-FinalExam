@@ -59,8 +59,8 @@ class Post(db.Model):
             "userId": self.userId,
             "text": self.text,
             "reacts": self.reacts,
-            "Likes": self.numLikes,
-            "Dislikes": self.numDislikes
+            #"Likes": self.numLikes,
+            #"Dislikes": self.numDislikes
         }
 
 class UserReact(db.Model):
