@@ -64,10 +64,8 @@ class Post(db.Model):
         }
 
 class UserReact(db.Model):
-    #userId = db.Column(db.Integer, db.ForeignKey('user.Id'), nullable=False) 
-    userId = db.Column(db.Integer, primary_key=True)
+    #userId = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) 
+    userId = db.Column('userId', db.Integer, primary_key=True)
     postId = db.Column(db.Integer, db.ForeignKey('post.id'), nullable= False)
-    #postId = db.relationship('Post', backref='post', lazy=True)
-    react = db.Column(db.String('like' or 'dislike'), nullable = False)
-    user = db.relationship('User')
+    react = db.Column(db.String(50), nullable = False)
 
