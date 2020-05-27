@@ -1,10 +1,36 @@
+<!--STUDENT ID: 816016203 -->
+
 {% extends "layout.html" %}
-{% block title %}Backend App{% endblock %}
-{% block page %}Backend App{% endblock %}
+{% block title %} Posts {% endblock %}
+{% block page %} {{ current_user.username }}'s Posts {% endblock %}
 
 {{ super() }}
 
 {% block content %}
-    <h1>This view is partially rendered on the server using jinja</h1>
-    <h2>It must be dynamically served</h2>
+    {% if current_user.is_authenticated %} <!--got this if statement from lab 6-->
+        <div id="content">
+            <div class="container">
+            <br>
+                <div class="row">
+
+                   <h4 style= "text-align: center"> Welcome {{ current_user.username }} </h4> 
+                   <br>
+                    <form class="col s12 m8 offset-m2 card-panel" method="POST" action="/app">
+
+                        <div class="input-field col s12 m8 offset-m2"> 
+                        <br>
+                            <textarea> </textarea>
+                        </div>
+
+                        <div class="input-field col s12 m8 offset-m2">
+                            <button type = "submit" > 
+						        Add Post
+					        </button>
+                        </div> 
+                    </form>
+                </div>
+            </div>
+        </div>
+
+{% endif %}
 {% endblock %}

@@ -56,10 +56,14 @@ jwt = JWT(app, authenticate, identity)
 def index():
   return render_template('index.html')
 
-
+'''
 @app.route('/app')
 def client_app():
   return app.send_static_file('app.html')
+'''
+@app.route('/app')
+def client_app():
+    return render_template('app.html')
 
 
 @app.route("/login", methods=(['GET', 'POST']))
@@ -82,6 +86,33 @@ def login():
         else:
             flash('Invalid Login')
         return redirect(url_for('login'))
+
+@app.route('/posts', methods=['GET', 'POST'])
+@login_required
+def add_posts():
+    new_post = request.get_json()
+    if new_post is not None:
+        post = Post(text=new_post['text'])
+        db.session.add(post)
+        db.session.commit()
+        flash ('New Post Added!')
+        return redirect(url_for('add_posts'))
+    return render_template('app.html')
+
+'''
+    todos = Todo.query.filter_by(userid=current_user.id).all()
+    if todos is None:
+    todos = [] # if user has no todos pass an empty list
+  form = AddTodo()
+  if form.validate_on_submit():
+    data = request.form
+    todo = Todo(text=data['text'], done=False, userid=current_user.id)
+    db.session.add(todo)
+    db.session.commit()
+    flash('Todo Created!')
+    return redirect(url_for('todos'))
+  return render_template('todo.html', form=form, todos=todos)
+'''
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=8080, debug=True)
