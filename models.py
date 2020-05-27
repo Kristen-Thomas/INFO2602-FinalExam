@@ -36,8 +36,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     userId = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) 
     text = db.Column(db.String(225), nullable=False)
-    #reacts = db.Column(db.UserReact, nullable=False)
-    reacts = db.relationship('UserReact', backref='userreact', lazy=True)
+    reacts = db.relationship('UserReact', backref='userreact', lazy=True, cascade="all, delete-orphan")
     
     def getTotalLikes (self):
         numLikes = 0

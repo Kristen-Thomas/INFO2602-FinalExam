@@ -32,6 +32,7 @@ def create_app():
 app = create_app()
 
 app.app_context().push()
+db.create_all(app=app)
 
 ''' End Boilerplate Code '''
 
@@ -44,6 +45,20 @@ app.app_context().push()
 #   pass
 
 # jwt = JWT(app, authenticate, identity)
+
+def authenticate(uname, password):
+  #search for the specified user
+  user = User.query.filter_by(username=uname).first()
+  #if user is found and password matches
+  if user and user.check_password(password):
+    return user
+
+#Payload is a dictionary which is passed to the function by Flask JWT
+def identity(payload):
+  return User.query.get(payload['identity'])
+
+jwt = JWT(app, authenticate, identity)
+
 ''' End JWT Setup '''
 
 @app.route('/')

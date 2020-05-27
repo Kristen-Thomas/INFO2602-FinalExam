@@ -1,10 +1,74 @@
-{% extends "layout.html" %}
-{% block title %}Backend App{% endblock %}
-{% block page %}Backend App{% endblock %}
+<!Doctype html>
+<html>
+  <head>
+  
+    <!--<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
+     <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title> LOGIN </title>
 
-{{ super() }}
+    <style>
+        .form-btn {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding-top: 20px;
+        }
 
-{% block content %}
-    <h1>This view is partially rendered on the server using jinja</h1>
-    <h2>It must be dynamically served</h2>
-{% endblock %}
+        .btn {
+            font-size: 17px;
+            line-height: 1.5;
+            color: #ffffff;
+            text-transform: uppercase;
+
+            width: 13%;
+            height: 50px;
+            border-radius: 25px;
+            background: #800080;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 25px;
+        }
+
+    </style> 
+  </head>
+  <body>
+    <nav class="purple">
+      <div class="nav-wrapper">
+        <a href="#!" class="brand-logo center"> Login </a>
+      </div>
+    </nav>
+
+    <div id="content"> 
+       <div class="row">
+            <form class="col s12 m8 offset-m2" method="POST" action="/">
+
+                <div class="input-field col s12 m8 offset-m2"> 
+                    <input type="text" placeholder="Enter Username" name="username" required>  
+                </div>
+
+                <div class="input-field col s12 m8 offset-m2"> 
+                    <input type="password" placeholder="Enter Password" name="password" required> 
+                </div>
+
+                <div class="form-btn">
+                    <button class = "btn"> 
+						Login
+					</button>
+				</div>
+
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
+</html>
+     
+    
