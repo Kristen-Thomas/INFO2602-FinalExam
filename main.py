@@ -6,7 +6,7 @@ from flask_jwt import JWT, jwt_required, current_identity
 from sqlalchemy.exc import IntegrityError
 from datetime import timedelta 
 
-from models import db, Logs #add application models
+from models import db, User, Post, UserReact
 
 ''' Begin boilerplate code '''
 
@@ -48,11 +48,12 @@ app.app_context().push()
 
 @app.route('/')
 def index():
-  return render_template('app.html')
+  return render_template('index.html')
 
 @app.route('/app')
 def client_app():
   return app.send_static_file('app.html')
+
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=8080, debug=True)
