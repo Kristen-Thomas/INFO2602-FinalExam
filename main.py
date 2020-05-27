@@ -78,8 +78,9 @@ def login():
             login_user(user)
             return redirect(url_for ('client_app'))
         if user is None:
-            flash('You haven\'t registered yet')
-        flash('Invalid login')
+            flash('You haven\'t registered yet! Please sign up!\n')
+        else:
+            flash('Invalid Login')
         return redirect(url_for('login'))
 
 if __name__ == '__main__':
