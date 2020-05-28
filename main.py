@@ -118,8 +118,8 @@ def get_posts():
   results = []
   for post in posts:
     rec = post.toDict()
-    rec['Likes: '] = post.getTotalLikes()
-    rec['Dislikes: '] = post.getTotalDislikes() 
+    rec['Likes'] = post.getTotalLikes()
+    rec['Dislikes'] = post.getTotalDislikes() 
     results.append(rec)
   return render_template('app.html', posts=results)
 

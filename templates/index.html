@@ -7,6 +7,50 @@
 {{ super() }}
 
 {% block content %}
+
+<style>
+    .form-btn {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding-top: 20px;
+    }
+
+    .btn {
+            font-size: 17px;
+            line-height: 1.5;
+            color: #ffffff;
+            text-transform: uppercase;
+            width: 13%;
+            height: 50px;
+            border-radius: 25px;
+            background: #800080;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 25px;
+        }
+</style>
+
+<!-- This code allows the messages to flash indicating the status e.g if you have logged in successfully, 
+if a post has been deleted, if your username is invalid etc.
+ -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <nav class="white black-text" style="padding: 10px">
+        <div class="nav-wrapper">
+            <ul class="flashes">
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+      </nav>
+    {% endif %}
+    {% endwith %}
+
+<!-- Login form code. -->
     <div id="content"> 
        <div class="row">
             <form class="col s12 m8 offset-m2" action="/login" method="POST">
