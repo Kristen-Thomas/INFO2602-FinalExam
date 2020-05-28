@@ -52,7 +52,7 @@ jwt = JWT(app, authenticate, identity)
 
 ''' End JWT Setup '''
 
-@app.route('/')
+@app.route('/') # working
 def index():
   return render_template('index.html')
 
@@ -61,12 +61,13 @@ def index():
 def client_app():
   return app.send_static_file('app.html')
 '''
-@app.route('/app')
+
+@app.route('/app') #this working
 def client_app():
     return render_template('app.html')
 
 
-@app.route("/login", methods=(['GET', 'POST'])) 
+@app.route("/login", methods=(['GET', 'POST']))  #this works as well
 def login():
     if request.method == 'GET':
         return render_template('index.html')
@@ -92,28 +93,47 @@ def login():
 def protected():
     return json.dumps(current_identity.username)
 
-@app.route('/posts', methods=['GET', 'POST'])
+@app.route('/add_post', methods=['POST']) #this works  - used extra Lab  and altered it
 @login_required
-def add_posts():
-    new_post = request.get_json()
-    if new_post is not None:
-        post = Post(text=new_post['text'], username = current_identity.username)
+def add_post():
+    if request.method == "POST":
+        new_post = request.form.to_dict()
+        post = Post(userId=current_user.id, text=new_post['textarea'])
         db.session.add(post)
         db.session.commit()
         flash ('New Post Added!')
-        return redirect(url_for('add_posts'))
-    return render_template('app.html')
+    return redirect(url_for('get_posts'))
+
+'''
+@app.route('/get_posts', methods=['GET']) #this works
+@login_required
+def get_posts():
+  posts = Post.query.all()
+  return render_template('app.html', posts=posts)
+'''
+
+@app.route('/deletePost/<id>', methods=["GET"])
+@login_required
+def delete_post(id):
+    post = Post.query.filter_by(userid=current_user.id, id=id).first()
+    if post == None:
+        flash ('Invalid!')
+    db.session.delete(post)
+    db.session.commit()
+    flash ('Deleted!')
+    return redirect(url_for('get_posts'))
+
 
 @app.route('/get_posts', methods=['GET']) #Lab 10 
 def get_posts():
   posts = Post.query.all()
   results = []
   for post in posts:
-    rec = Post.toDict()
+    rec = post.toDict()
     rec['Likes: '] = post.getTotalLikes()
     rec['Dislikes: '] = post.getTotalDislikes() 
     results.append(rec)
-  return json.dumps(results)
+  return render_template('app.html', posts=results)
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=8080, debug=True)

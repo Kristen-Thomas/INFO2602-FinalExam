@@ -15,11 +15,11 @@
 
                    <h4 style= "text-align: center"> Welcome {{ current_user.username }} </h4> 
                    <br>
-                    <form class="col s12 m8 offset-m2 card-panel" method="POST" action="/app">
+                    <form class="col s12 m8 offset-m2 card-panel"  action="/add_post" method="POST">
 
                         <div class="input-field col s12 m8 offset-m2"> 
                         <br>
-                            <textarea> </textarea>
+                            <textarea name ="textarea"> </textarea>
                         </div>
 
                         <div class="input-field col s12 m8 offset-m2">
@@ -31,6 +31,17 @@
                 </div>
             </div>
         </div>
+
+        {% for post in posts %}
+        <p> Post ID: {{post.id}} <p>
+        <p> User : {{ current_user.username }}
+        <p> Text: {{post.text}} </p>
+        <p> Dislikes : {{post}} </p>
+        <p> Likes : {{post}} </p>
+                      
+        {% endfor %}
+        
+
 
 {% endif %}
 {% endblock %}
