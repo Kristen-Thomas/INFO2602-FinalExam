@@ -44,7 +44,7 @@ if a post has been deleted, if your username is invalid etc.
     {% endif %}
     {% endwith %}
 
-    {% if current_user.is_authenticated %} <!--Reference Lab 6 for this statement-->
+    {% if current_user.is_authenticated %} <!--Referenced Lab 6 for this statement-->
 
     <!-- This code outputs the add post form.-->
         <div id="content">
@@ -71,22 +71,33 @@ if a post has been deleted, if your username is invalid etc.
             </div>
         </div>
 
-        <!-- This code outputs the posts entered and previous posts as well.-->
+        <!-- This code outputs the posts entered and previous posts as well.
+        Referenced the extra lab for assistance with this and edited it to suit.
+        -->
+
         <div id="content">
         <div class="container">
             {% for post in posts %}
                <li class = "cardCollection">
                     <form class= "card panel " style= "width: 500px;">
                         <span class="card-title" style="text-align:center;">
-                        <br>
-                            <p> User : {{current_user.username }}
-                            <p> Text: {{post.text}} </p>
-                            <p> Dislikes : {{post['Dislikes']}} </p>
+                            <p> User : {{current_user.username }} </p> 
+                            <p> {{post.text}} </p>
+                            <p> Dislikes : {{post['Dislikes']}}  </p>
                             <p> Likes : {{post['Likes']}} </p>
                         </span>
-                        <div class="card-action" style="text-align:center;">
-                            <a href="/deletePost/{{post.id}}">DELETE</a>
-                        </div>
+                        <!--<div class="card-action" style="text-align:center;"> -->
+                         <div class="card-action">    
+                            <a href="/deletePost/{{post.id}}">DELETE</a>  <!--Delete button code -->
+                         </div>
+                        
+                        <form>
+                        <select name="react">
+                            <option value="like" selected>Like</option>
+                            <option value="dislike">Dislike</option>
+                        </select>
+                        </form>
+                        
                     </form>
                 </li>
             {% endfor %}

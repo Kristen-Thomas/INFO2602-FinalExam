@@ -23,9 +23,9 @@ def create_app():
   app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
   app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
   app.config['SECRET_KEY'] = "MYSECRET"
-  app.config['JWT_EXPIRATION_DELTA'] = timedelta(days = 7) # uncomment if using flsk jwt
+  app.config['JWT_EXPIRATION_DELTA'] = timedelta(days = 7) 
   CORS(app)
-  login_manager.init_app(app) # uncomment if using flask login
+  login_manager.init_app(app) 
   db.init_app(app)
   return app
 
@@ -38,9 +38,9 @@ db.create_all(app=app)
 
 ''' Set up JWT here (if using flask JWT)'''
 
-#found in lab 5
-def authenticate(uname, password): #search for the specified user
-  user = User.query.filter_by(username=uname).first() #if user is found and password matches
+#Referenced Lab 5
+def authenticate(uname, password): 
+  user = User.query.filter_by(username=uname).first() 
   if user and user.check_password(password):
     return user 
 
@@ -81,19 +81,19 @@ def login():
         if user and user.check_password(password):
             flash('Logged in successfully')
             login_user(user)
-            return redirect(url_for ('client_app'))
+            return redirect(url_for ('get_posts'))
         if user is None:
             flash('You haven\'t registered yet! Please sign up!\n')
         else:
             flash('Invalid Login')
         return redirect(url_for('login'))
 
-@app.route('/identify') #Reference extra lab
+@app.route('/identify') #Referenced extra lab
 @jwt_required()
 def protected():
     return json.dumps(current_identity.username)
 
-@app.route('/add_post', methods=['POST']) #Reference extra lab - working function 
+@app.route('/add_post', methods=['POST']) #Referenced extra lab - working function 
 @login_required
 def add_post():
     if request.method == "POST":
@@ -104,15 +104,7 @@ def add_post():
         flash ('New Post Added!')
     return redirect(url_for('get_posts'))
 
-'''
-@app.route('/get_posts', methods=['GET']) #this works
-@login_required
-def get_posts():
-  posts = Post.query.all()
-  return render_template('app.html', posts=posts)
-'''
-
-@app.route('/get_posts', methods=['GET']) #Reference extra lab - working function
+@app.route('/get_posts', methods=['GET']) #Referenced extra lab - working function
 def get_posts():
   posts = Post.query.all()
   results = []
@@ -123,7 +115,7 @@ def get_posts():
     results.append(rec)
   return render_template('app.html', posts=results)
 
-@app.route('/deletePost/<id>', methods=["GET"]) #Reference extra lab - working function
+@app.route('/deletePost/<id>', methods=["GET"]) #Referenced extra lab - working function
 @login_required
 def delete_post(id):
     post = Post.query.filter_by(userId=current_user.id, id=id).first()
