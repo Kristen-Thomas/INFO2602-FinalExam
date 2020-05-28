@@ -20,11 +20,9 @@ class User(UserMixin, db.Model): #Referenced Lab 5
       }
     
     def set_password(self, password):
-        """Create hashed password."""
         self.password = generate_password_hash(password, method='sha256')
     
     def check_password(self, password):
-        """Check hashed password."""
         return check_password_hash(self.password, password)  
 
 class Post(db.Model):
@@ -33,14 +31,14 @@ class Post(db.Model):
     text = db.Column(db.String(225), nullable=False)
     reacts = db.relationship('UserReact', backref='userreact', lazy=True, cascade="all, delete-orphan")
     
-    def getTotalLikes (self): #Referenced extra lab for assistance with this function
+    def getTotalLikes (self): #Referenced extra  for assistance with this function
         numLikes = 0
         for react in self.reacts:
             if react == 'like': 
                 numLikes += 1
         return numLikes
 
-    def getTotalDislikes (self):
+    def getTotalDislikes (self): #Referenced extra lab for assistance with this function
         numDislikes = 0
         for react in self.reacts:
             if react == 'dislike': 

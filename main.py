@@ -1,3 +1,5 @@
+#STUDENT ID : 816016203
+
 import json
 from flask_cors import CORS
 from flask_login import LoginManager, current_user, login_user, login_required
@@ -67,7 +69,7 @@ def client_app():
     return render_template('app.html')
 
 
-@app.route("/login", methods=(['GET', 'POST']))  #Working function
+@app.route("/login", methods=(['GET', 'POST']))  #Referenced INFO 2602 Project - Working function
 def login():
     if request.method == 'GET':
         return render_template('index.html')
@@ -88,6 +90,11 @@ def login():
             flash('Invalid Login')
         return redirect(url_for('login'))
 
+
+@app.route('/logout', methods=(['GET'])) #Working function
+def logout():
+  return render_template('index.html')
+
 @app.route('/identify') #Referenced extra lab
 @jwt_required()
 def protected():
@@ -107,13 +114,14 @@ def add_post():
 @app.route('/get_posts', methods=['GET']) #Referenced extra lab - working function
 def get_posts():
   posts = Post.query.all()
+  users = User.query.all()
   results = []
   for post in posts:
     rec = post.toDict()
     rec['Likes'] = post.getTotalLikes()
     rec['Dislikes'] = post.getTotalDislikes() 
     results.append(rec)
-  return render_template('app.html', posts=results)
+  return render_template('app.html', posts=results, users=users)
 
 @app.route('/deletePost/<id>', methods=["GET"]) #Referenced extra lab - working function
 @login_required

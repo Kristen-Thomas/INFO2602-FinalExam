@@ -2,7 +2,19 @@
 
 {% extends "layout.html" %}
 {% block title %} Posts {% endblock %}
-{% block page %} {{ current_user.username }}'s Posts {% endblock %}
+
+{% block page %} 
+{{ current_user.username }}'s Posts 
+
+{% block link%} 
+    <ul id="nav-mobile" class="right">
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+{% endblock %}
+
+{% endblock %}
+
+
 
 {{ super() }}
 
@@ -24,6 +36,8 @@
         display: flex;
         justify-content: center;
     }
+
+
         
 </style>
 
@@ -51,21 +65,21 @@ if a post has been deleted, if your username is invalid etc.
             <div class="container">
             <br>
                 <div class="row">
-
                    <h4 style= "text-align: center"> Welcome {{ current_user.username }} </h4> 
                    <br>
                     <form class="col s12 m8 offset-m2 card-panel"  action="/add_post" method="POST">
-
+                    
                         <div class="input-field col s12 m8 offset-m2"> 
                         <br>
                             <textarea name ="textarea"> </textarea>
                         </div>
 
                         <div class="input-field col s12 m8 offset-m2">
-                            <button type = "submit" > 
+                            <button type = "submit" style="float: right;"> 
 						        Add Post
 					        </button>
                         </div> 
+                    
                     </form>
                 </div>
             </div>
@@ -80,28 +94,76 @@ if a post has been deleted, if your username is invalid etc.
             {% for post in posts %}
                <li class = "cardCollection">
                     <form class= "card panel " style= "width: 500px;">
-                        <span class="card-title" style="text-align:center;">
-                            <p> User : {{current_user.username }} </p> 
-                            <p> {{post.text}} </p>
-                            <p> Dislikes : {{post['Dislikes']}}  </p>
-                            <p> Likes : {{post['Likes']}} </p>
-                        </span>
-                        <!--<div class="card-action" style="text-align:center;"> -->
-                         <div class="card-action">    
-                            <a href="/deletePost/{{post.id}}">DELETE</a>  <!--Delete button code -->
-                         </div>
-                        
-                        <form>
-                        <select name="react">
-                            <option value="like" selected>Like</option>
-                            <option value="dislike">Dislike</option>
-                        </select>
-                        </form>
-                        
+                        <div style="border-style: ridge;">
+                            <span class="card-title" style="text-align:center;">
+                                {% if current_user.id == post.userId %}
+                                    <p> User: {{current_user.username }} </p>
+                                {% else %}
+                                    {% for user in users %}
+                                        {% if post.userId == user.id %}
+                                            <p> User: {{user.username }} </p>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+
+                                <p> {{post.text}} </p>
+                                <p> Dislikes : {{post['Dislikes']}}  </p>
+                                <p> Likes : {{post['Likes']}} </p>
+                            </span>
+
+                            <div class="card-action" >    
+                                <!-- Code to check if this post belongs to the current logged in user then they will get the delete post option otherwise they won't.-->
+                                {% if current_user.id == post.userId%} 
+                                    <a href="/deletePost/{{post.id}}"> DELETE </a> <!--Delete button code -->
+                                    <p> Please select a checkbox: &nbsp;&nbsp; 
+                                        <label>
+                                            <input type="checkbox" name = "reacts" id= "like" onclick="totalLikes()"/>
+                                            <span>Like &nbsp; &nbsp;</span>
+                                        </label>
+                                    
+                                        <label>
+                                            <input type="checkbox" name = "reacts" id = "dislike" onclick="totalDislikes()"/>
+                                            <span> Dislike </span>
+                                        </label>
+                                    </p>
+                                {% else %}
+                                    <p> Please select a checkbox: &nbsp;&nbsp; 
+                                        <label>
+                                            <input type="checkbox" name = "reacts" id= "like" onclick="totalLikes()"/>
+                                            <span>Like &nbsp; &nbsp;</span>
+                                        </label>
+                                    
+                                        <label>
+                                            <input type="checkbox" name = "reacts" id = "dislike" onclick="totalDislikes()"/>
+                                            <span> Dislike </span>
+                                        </label>
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
                     </form>
+
                 </li>
             {% endfor %}
         </div>
         </div>  
     {% endif %}
+
+    {% block javascript %}
+        <script>
+            likeAmt = 0
+            dislikeAmt = 0
+             
+            function totalLikes(){
+                likeAmt ++;
+                alert(likeAmt)
+            }
+
+            function totalDislikes(){
+                dislikeAmt ++;
+                alert(dislikeAmt)
+            }
+
+        </script>
+    {% endblock %}
 {% endblock %}
