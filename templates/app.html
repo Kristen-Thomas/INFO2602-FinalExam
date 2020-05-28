@@ -117,24 +117,24 @@ if a post has been deleted, if your username is invalid etc.
                                     <a href="/deletePost/{{post.id}}"> DELETE </a> <!--Delete button code -->
                                     <p> Please select a checkbox: &nbsp;&nbsp; 
                                         <label>
-                                            <input type="checkbox" name = "reacts" id= "like" onclick="totalLikes()"/>
+                                            <input type="checkbox" name = "reacts" id= "like"/>
                                             <span>Like &nbsp; &nbsp;</span>
                                         </label>
                                     
                                         <label>
-                                            <input type="checkbox" name = "reacts" id = "dislike" onclick="totalDislikes()"/>
+                                            <input type="checkbox" name = "reacts" id = "dislike/>
                                             <span> Dislike </span>
                                         </label>
                                     </p>
                                 {% else %}
                                     <p> Please select a checkbox: &nbsp;&nbsp; 
                                         <label>
-                                            <input type="checkbox" name = "reacts" id= "like" onclick="totalLikes()"/>
+                                            <input type="checkbox" name = "reacts" id= "like" />
                                             <span>Like &nbsp; &nbsp;</span>
                                         </label>
                                     
                                         <label>
-                                            <input type="checkbox" name = "reacts" id = "dislike" onclick="totalDislikes()"/>
+                                            <input type="checkbox" name = "reacts" id = "dislike" />
                                             <span> Dislike </span>
                                         </label>
                                     </p>
@@ -148,22 +148,4 @@ if a post has been deleted, if your username is invalid etc.
         </div>
         </div>  
     {% endif %}
-
-    {% block javascript %}
-        <script>
-            likeAmt = 0
-            dislikeAmt = 0
-             
-            function totalLikes(){
-                likeAmt ++;
-                alert(likeAmt)
-            }
-
-            function totalDislikes(){
-                dislikeAmt ++;
-                alert(dislikeAmt)
-            }
-
-        </script>
-    {% endblock %}
 {% endblock %}
