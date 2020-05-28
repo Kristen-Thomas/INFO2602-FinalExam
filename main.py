@@ -52,7 +52,7 @@ jwt = JWT(app, authenticate, identity)
 
 ''' End JWT Setup '''
 
-@app.route('/') # working
+@app.route('/') #Working function
 def index():
   return render_template('index.html')
 
@@ -62,12 +62,12 @@ def client_app():
   return app.send_static_file('app.html')
 '''
 
-@app.route('/app') #this working
+@app.route('/app') #Working function
 def client_app():
     return render_template('app.html')
 
 
-@app.route("/login", methods=(['GET', 'POST']))  #this works as well
+@app.route("/login", methods=(['GET', 'POST']))  #Working function
 def login():
     if request.method == 'GET':
         return render_template('index.html')
@@ -88,12 +88,12 @@ def login():
             flash('Invalid Login')
         return redirect(url_for('login'))
 
-@app.route('/identify') #Lab 10
+@app.route('/identify') #Reference extra lab
 @jwt_required()
 def protected():
     return json.dumps(current_identity.username)
 
-@app.route('/add_post', methods=['POST']) #this works  - used extra Lab  and altered it
+@app.route('/add_post', methods=['POST']) #Reference extra lab - working function 
 @login_required
 def add_post():
     if request.method == "POST":
@@ -112,19 +112,7 @@ def get_posts():
   return render_template('app.html', posts=posts)
 '''
 
-@app.route('/deletePost/<id>', methods=["GET"])
-@login_required
-def delete_post(id):
-    post = Post.query.filter_by(userid=current_user.id, id=id).first()
-    if post == None:
-        flash ('Invalid!')
-    db.session.delete(post)
-    db.session.commit()
-    flash ('Deleted!')
-    return redirect(url_for('get_posts'))
-
-
-@app.route('/get_posts', methods=['GET']) #Lab 10 
+@app.route('/get_posts', methods=['GET']) #Reference extra lab - working function
 def get_posts():
   posts = Post.query.all()
   results = []
@@ -134,6 +122,17 @@ def get_posts():
     rec['Dislikes: '] = post.getTotalDislikes() 
     results.append(rec)
   return render_template('app.html', posts=results)
+
+@app.route('/deletePost/<id>', methods=["GET"]) #Reference extra lab - working function
+@login_required
+def delete_post(id):
+    post = Post.query.filter_by(userId=current_user.id, id=id).first()
+    if post == None:
+        flash ('Invalid!')
+    db.session.delete(post)
+    db.session.commit()
+    flash ('Deleted!')
+    return redirect(url_for('get_posts'))
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=8080, debug=True)

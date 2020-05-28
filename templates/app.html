@@ -32,16 +32,26 @@
             </div>
         </div>
 
-        {% for post in posts %}
-        <p> Post ID: {{post.id}} <p>
-        <p> User : {{ current_user.username }}
-        <p> Text: {{post.text}} </p>
-        <p> Dislikes : {{post}} </p>
-        <p> Likes : {{post}} </p>
-                      
-        {% endfor %}
-        
-
-
-{% endif %}
+        <div id="content">
+        <div class="container">
+            {% for post in posts %}
+               <li class = "cardCollection">
+                    <form class= "card panel " style= "width: 500px;">
+                        <span class="card-title" style="text-align:center;">
+                        <br>
+                            <!--<p> Post ID: {{post.id}} <p>-->
+                            <p> User : {{current_user.username }}
+                            <p> Text: {{post.text}} </p>
+                            <p> Dislikes : {{post['Dislikes']}} </p>
+                            <p> Likes : {{post['Likes']}} </p>
+                        </span>
+                        <div class="card-action" style="text-align:center;">
+                            <a href="/deletePost/{{post.id}}">DELETE</a>
+                        </div>
+                    </form>
+                </li>
+            {% endfor %}
+        </div>
+        </div>  
+    {% endif %}
 {% endblock %}
